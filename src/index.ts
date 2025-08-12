@@ -133,7 +133,7 @@ export function apply(ctx: Context, config: Config) {
   --status          查看当前设置
 —————
 Powered by
-Phimg for Koishi @ JessDaodao`
+Phimg for Koishi @ CyanFlow`
 
   ctx.command('搜图 <tags:text>', '从图站搜索图片')
     .option('add', '--add <tags:text> 添加标签')
