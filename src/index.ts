@@ -19,8 +19,8 @@ export interface Config {
   defaultTags: string[]
   enabledByDefault: boolean
   useGlobalTagsByDefault: boolean
+  proxy: string
 }
-
 
 export const Config: Schema<Config> = Schema.object({
   apiKey: Schema.string().description('Philomena API 密钥').default(''),
@@ -28,6 +28,7 @@ export const Config: Schema<Config> = Schema.object({
   defaultTags: Schema.array(String).description('全局标签').default(['safe']),
   enabledByDefault: Schema.boolean().description('默认启用搜图功能').default(true),
   useGlobalTagsByDefault: Schema.boolean().description('默认启用全局标签').default(true),
+  proxy: Schema.string().description('代理服务器').default(''),
 })
 
 interface GroupConfig extends Record<string, any> {
@@ -87,13 +88,23 @@ export function apply(ctx: Context, config: Config) {
     const url = `${config.apiUrl}${queryParams.toString()}`
     
     try {
-      const response = await axios.get(url, {
+      const axiosConfig = {
         headers: {
           'Accept': 'application/json',
           'User-Agent': 'Phimg for Koishi'
         },
         timeout: 30000
-      })
+      }
+
+      if (config.proxy) {
+        axiosConfig['proxy'] = {
+          host: config.proxy.split(':')[1].replace('//', ''),
+          port: parseInt(config.proxy.split(':')[2]),
+          protocol: config.proxy.split(':')[0]
+        }
+      }
+
+      const response = await axios.get(url, axiosConfig)
 
       if (response.data.total === 0) {
         throw new Error('未找到匹配的图片')
@@ -177,7 +188,7 @@ Phimg for Koishi @ CyanFlow`
       }
 
       if (!groupConfig.enabled) {
-        return '搜图未在本群开启，管理员请用 “搜图 --on” 启动'
+        return '搜图未在本群开启，管理员请用 "搜图 --on" 启动'
       }
 
       if (options.onglobal || options.offglobal) {
