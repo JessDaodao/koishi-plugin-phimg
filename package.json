@@ -9,6 +9,10 @@
     "dist"
   ],
   "license": "AGPL-3.0-only",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JessDaodao/koishi-plugin-phimg.git"
+  },
   "scripts": {},
   "keywords": [
     "chatbot",
