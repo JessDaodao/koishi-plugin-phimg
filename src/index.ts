@@ -23,8 +23,8 @@ export interface Config {
 
 
 export const Config: Schema<Config> = Schema.object({
-  apiKey: Schema.string().description('Philomena API key').default(''),
-  apiUrl: Schema.string().description('Philomena API url').default('https://derpibooru.org/api/v1/json/search/images?'),
+  apiKey: Schema.string().description('Philomena API 密钥').default(''),
+  apiUrl: Schema.string().description('Philomena API 链接').default('https://derpibooru.org/api/v1/json/search/images?'),
   defaultTags: Schema.array(String).description('全局标签').default(['safe']),
   enabledByDefault: Schema.boolean().description('默认启用搜图功能').default(true),
   useGlobalTagsByDefault: Schema.boolean().description('默认启用全局标签').default(true),
@@ -133,7 +133,7 @@ export function apply(ctx: Context, config: Config) {
   --status          查看当前设置
 —————
 Powered by
-Phimg for Koishi @ CyanFlow`
+Phimg for Koishi @ JessDaodao`
 
   ctx.command('搜图 <tags:text>', '从图站搜索图片')
     .option('add', '--add <tags:text> 添加标签')
